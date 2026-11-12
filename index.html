@@ -98,6 +98,33 @@
 @media(max-width:600px){#monitor .monitor-image{width:82px}}
 /* Temporarily hide the original feed placeholder. */
 #deals{display:none!important}
+
+/* Page glassmorphism */
+body{background:#eef5ef;background-image:radial-gradient(ellipse at 4% 7%,#8ed5bb70 0,transparent 32%),radial-gradient(ellipse at 96% 22%,#a7cae66b 0,transparent 36%),radial-gradient(ellipse at 12% 65%,#f5d99d61 0,transparent 30%),radial-gradient(ellipse at 90% 85%,#e4b6cb50 0,transparent 34%);background-attachment:fixed}
+.wrap{position:relative}
+header{margin:16px 0 20px;height:76px;padding:0 22px;border:1px solid #ffffffdc;border-radius:20px;background:#ffffffad;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 8px 28px #254e4008,inset 0 1px 0 #fff}
+nav{color:#536d5e}
+.hero,#monitor,.weekly,.promise{border:1px solid #ffffffda;background:linear-gradient(120deg,#ffffffb8,#ffffff75);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 36px #234d400a,inset 0 1px 0 #ffffffed}
+.hero{border-radius:24px}
+.hero-art{background:radial-gradient(ellipse at 51% 62%,#c7dfc17a,transparent 70%)}
+.hero-copy>p,.hero-note{color:#526c59}
+.tag,.stamp{box-shadow:0 8px 24px #234d4012;border:1px solid #ffffffbf}
+.tag{background:#ffffffb8;backdrop-filter:blur(10px);border-radius:12px}
+.store-strip{border:1px solid #ffffffa8;background:#ffffff66;border-radius:18px;padding:20px;margin:24px 0;box-shadow:0 4px 20px #234d4005}
+#monitor{background:linear-gradient(130deg,#ffffffb5,#ffffff75);border-radius:24px}
+#monitor .monitor-card{background:#ffffffed;box-shadow:0 5px 18px #234d400b,inset 0 1px 0 white;border:1px solid #ffffffec;transition:box-shadow .18s ease,transform .18s ease}
+#monitor .monitor-card:hover{box-shadow:0 10px 24px #234d4017;transform:translateY(-2px)}
+.search-row .search,.search-row select{background:#ffffffb8;border:1px solid #ffffffed;box-shadow:0 3px 12px #234d4006;border-radius:12px}
+.search-row input{background:transparent}
+#monitor .comparison-heading{border-color:#234d4014}
+.weekly{padding:28px;border-radius:24px}
+.weekly-card,.store-card{background:#ffffffa8;border:1px solid #ffffffd9;box-shadow:0 5px 18px #234d4007;border-radius:18px}
+.promise{border-radius:24px}
+footer{border-top-color:#ffffffbb}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){header,.hero,#monitor,.weekly,.promise{background:#f8fcf8}}
+@media(max-width:700px){header{padding:0 12px;gap:12px;border-radius:16px}.weekly{padding:18px}.store-strip{padding:14px}#monitor{border-radius:20px}}
+@media(prefers-reduced-motion:reduce){#monitor .monitor-card{transition:none}#monitor .monitor-card:hover{transform:none}}
+
 </style></head><body>
 <div class="announcement"><b>GOOD DEALS ONLY.</b> A little less spending. A lot more finding. &nbsp; ✦</div><div class="wrap">
 <header><a class="brand" href="#home" aria-label="DealDrop home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#234d40"/><path d="m11 13 11-3 9 9-12 12-9-9z" fill="#dcebc1"/><circle cx="16" cy="16" r="2" fill="#234d40"/></svg>deal<span>drop</span></a><nav aria-label="Main navigation"><a class="active" href="#monitor">Discover</a><a href="#weekly">Weekly deals</a><a href="#stores">Stores</a></nav><button id="saved-nav" class="saved-nav"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>Saved</span><b id="saved-count">0</b></button></header>
