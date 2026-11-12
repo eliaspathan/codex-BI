@@ -14,6 +14,7 @@ assert.equal(run("isEligible({store:'Amazon',price:5,original:10,checkedAt:new D
 assert.equal(run('stores.length'),9);assert.equal(run("picture('headphones').includes('id=\"shell\"')"),false);
 assert(html.includes('<!-- DEALNEWS FEED TEMPORARILY COMMENTED OUT.'));assert(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html));
 console.log('PASS: verified default, preview labeling, search, filters, saved items, nine stores, price/expiry guards, standalone assets, and disabled DealNews section.');
+context.URL=URL;
 const monitorScript=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][1][1];
 vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows};})();'),context);
 const monitor=run('monitorTest');
