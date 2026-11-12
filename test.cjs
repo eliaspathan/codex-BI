@@ -28,7 +28,7 @@ assert.equal(monitor.isMonitorEligible(valid,'2026-11-11'),false);
 assert.equal(Object.keys(monitor.productPhotos).length,33);
 assert(element('#monitor-grid').innerHTML.includes('Deal expires'));
 assert(element('#monitor-grid').innerHTML.includes('Available'));
-assert(element('#monitor-grid').innerHTML.includes('Sold'));
+assert(!element('#monitor-grid').innerHTML.includes('<span>Sold</span>'));
 assert(element('#monitor-grid').innerHTML.includes('product-photo'));
 console.log('PASS: monitor photos, card fields, inclusive expiry day, expired/upcoming/zero/invalid-stock exclusion.');
 
