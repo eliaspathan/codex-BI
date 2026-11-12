@@ -15,7 +15,7 @@ assert.equal(run('stores.length'),9);assert.equal(run("picture('headphones').inc
 assert(html.includes('<!-- DEALNEWS FEED TEMPORARILY COMMENTED OUT.'));assert(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html));
 console.log('PASS: verified default, preview labeling, search, filters, saved items, nine stores, price/expiry guards, standalone assets, and disabled DealNews section.');
 const monitorScript=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][1][1];
-vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos};})();'),context);
+vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows};})();'),context);
 const monitor=run('monitorTest');
 const valid={available_qty:'2',deal_start_date:'2026-11-12',deal_end_date:'2026-11-12'};
 assert.equal(monitor.isMonitorEligible(valid,'2026-11-12'),true);
@@ -30,3 +30,12 @@ assert(element('#monitor-grid').innerHTML.includes('Available'));
 assert(element('#monitor-grid').innerHTML.includes('Sold'));
 assert(element('#monitor-grid').innerHTML.includes('product-photo'));
 console.log('PASS: monitor photos, card fields, inclusive expiry day, expired/upcoming/zero/invalid-stock exclusion.');
+
+assert.equal(monitor.listedPrice({discount:'Was $21.74 → $19.54'}),19.54);
+assert.equal(monitor.listedPrice({discount:'Rollback to $99'}),99);
+assert.equal(monitor.listedPrice({discount:'25% off'}),Infinity);
+assert.deepEqual([...new Set(monitor.rows.filter(r=>r.category==='Electronics').map(r=>r.store_name))].sort(),['Amazon.com','Walmart']);
+element('#monitor-category').value='Electronics';monitor.draw();
+assert(element('#monitor-grid').innerHTML.includes('comparison-heading'));
+assert(!element('#monitor-grid').innerHTML.includes('Mainstays'));
+console.log('PASS: shared categories, numeric price parsing, and category filtering.');
