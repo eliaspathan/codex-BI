@@ -154,7 +154,7 @@ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 
 function comparisonCategory(r){const c=r.category.toLowerCase();return /electronics/.test(c)?'Electronics':/groceries/.test(c)?'Groceries':/pharmacy|beauty/.test(c)?'Health & Beauty':/household/.test(c)?'Household Essentials':/apparel/.test(c)?'Fashion & Accessories':/sporting/.test(c)?'Sports & Outdoors':/toys/.test(c)?'Toys & Outdoor Play':/office/.test(c)?'Office & Organization':'Home & Kitchen'}
 function listedPrice(r){const sale=r.discount.match(/→\s*\$([\d,.]+)/);const rollback=r.discount.match(/Rollback to \$([\d,.]+)/i);const value=sale||rollback;return value?Number(value[1].replace(/,/g,'')):Infinity}
-function offerPrice(r){const price=listedPrice(r);if(!Number.isFinite(price))return '<span class="offer-note">'+escape(r.discount)+'</span>';const old=r.discount.match(/Was \$([\d,.]+)/);return '<strong>'+money(price)+'</strong>'+(old?'<del>'+money(Number(old[1].replace(/,/g,'')))+'</del>':'')}
+function offerPrice(r){const price=listedPrice(r);if(!Number.isFinite(price))return /\d+%/.test(r.discount)?'':'<span class="offer-note">'+escape(r.discount)+'</span>';const old=r.discount.match(/Was \$([\d,.]+)/);return '<strong>'+money(price)+'</strong>'+(old?'<del>'+money(Number(old[1].replace(/,/g,'')))+'</del>':'')}
 rows.forEach(r=>{r.source_category=r.category;r.category=comparisonCategory(r)});
 
 for(const category of [...new Set(rows.map(r=>r.category))].sort()){const o=document.createElement('option');o.value=category;o.textContent=category;get('#monitor-category').append(o)}
