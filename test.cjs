@@ -15,8 +15,9 @@ assert.equal(run('stores.length'),9);assert.equal(run("picture('headphones').inc
 assert(html.includes('<!-- DEALNEWS FEED TEMPORARILY COMMENTED OUT.'));assert(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html));
 console.log('PASS: verified default, preview labeling, search, filters, saved items, nine stores, price/expiry guards, standalone assets, and disabled DealNews section.');
 context.URL=URL;
+context.Date=class extends Date{constructor(...args){super(...(args.length?args:['2026-11-13T12:00:00Z']))}static now(){return Date.parse('2026-11-13T12:00:00Z')}};
 const monitorScript=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][1][1];
-vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows};})();'),context);
+vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows,todayInNewYork};})();'),context);
 const monitor=run('monitorTest');
 const valid={available_qty:'2',deal_start_date:'2026-11-12',deal_end_date:'2026-11-12'};
 assert.equal(monitor.isMonitorEligible(valid,'2026-11-12'),true);
@@ -26,6 +27,8 @@ assert.equal(monitor.isMonitorEligible({...valid,available_qty:'unknown'},'2026-
 assert.equal(monitor.isMonitorEligible({...valid,available_qty:'-1'},'2026-11-12'),false);
 assert.equal(monitor.isMonitorEligible(valid,'2026-11-11'),false);
 assert.equal(Object.keys(monitor.productPhotos).length,33);
+// Rendering checks use a known date, independent of the date this test runs.
+monitor.draw();
 assert(element('#monitor-grid').innerHTML.includes('Deal expires'));
 assert(element('#monitor-grid').innerHTML.includes('Available'));
 assert(!element('#monitor-grid').innerHTML.includes('<span>Sold</span>'));
@@ -35,8 +38,24 @@ console.log('PASS: monitor photos, card fields, inclusive expiry day, expired/up
 assert.equal(monitor.listedPrice({discount:'Was $21.74 → $19.54'}),19.54);
 assert.equal(monitor.listedPrice({discount:'Rollback to $99'}),99);
 assert.equal(monitor.listedPrice({discount:'25% off'}),Infinity);
-assert.deepEqual([...new Set(monitor.rows.filter(r=>r.category==='Electronics').map(r=>r.store_name))].sort(),['Amazon.com','Walmart']);
+assert.equal(monitor.rows.length,25);
+assert(monitor.rows.every(r=>monitor.isMonitorEligible(r,'2026-11-13')));
+assert(!monitor.rows.some(r=>r.deal_end_date<'2026-11-13'||Number(r.available_qty)<=0));
 element('#monitor-category').value='Electronics';monitor.draw();
 assert(element('#monitor-grid').innerHTML.includes('comparison-heading'));
 assert(!element('#monitor-grid').innerHTML.includes('Mainstays'));
 console.log('PASS: shared categories, numeric price parsing, and category filtering.');
+
+// Calendar validation, explicit stock statuses, and fractional quantities.
+for(const available_qty of ['0','-1','unknown','','0.5','Infinity'])assert.equal(monitor.isMonitorEligible({...valid,available_qty},'2026-11-12'),false);
+for(const stock_status of ['out of stock','out_of_stock','sold out','unavailable'])assert.equal(monitor.isMonitorEligible({...valid,stock_status},'2026-11-12'),false);
+assert.equal(monitor.isMonitorEligible({...valid,unavailable:true},'2026-11-12'),false);
+assert.equal(monitor.isMonitorEligible({...valid,in_stock:false},'2026-11-12'),false);
+assert.equal(monitor.isMonitorEligible({...valid,deal_end_date:'2026-11-31'},'2026-11-12'),false);
+assert.equal(monitor.isMonitorEligible({...valid,deal_start_date:'2026-02-30'},'2026-11-12'),false);
+assert.equal(monitor.isMonitorEligible({...valid,deal_start_date:'2026-11-14',deal_end_date:'2026-11-13'},'2026-11-13'),false);
+assert.equal(monitor.isMonitorEligible(null,'2026-11-13'),false);
+assert.equal(monitor.isMonitorEligible(valid,'not-a-date'),false);
+assert.equal(monitor.todayInNewYork(new Date('2026-11-13T04:59:59Z')),'2026-11-12');
+assert.equal(monitor.todayInNewYork(new Date('2026-11-13T05:00:00Z')),'2026-11-13');
+console.log('PASS: invalid dates, explicit out-of-stock flags, invalid quantities, and New York expiry boundaries.');
