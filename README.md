@@ -33,3 +33,7 @@ Connect an authorized retailer product feed on a server, normalize verified offe
 ## Monitor picks
 
 The imported monitor list groups products by shared category, with known prices sorted low to high. Percentage-only and unspecified prices appear last. Available and Sold figures and Deal expires dates come from the supplied monitor list and are not independently verified. Items outside their listed dates or without a positive reported available quantity stay hidden. Dates use America/New_York and refresh every minute. Product photos are representative when a variant or model was not specified; three unmatched entries use labeled illustrations.
+
+## November 13, 2026 cleanup
+
+Removed eleven monitor rows with listed deal end dates of November 12, 2026. The remaining twenty-five rows have positive reported quantities and listed end dates on or after the cleanup date. No zero-stock rows were present in this supplied snapshot. Calendar dates, inclusive end dates in America/New_York, positive whole-item quantities, and explicit unavailable/out-of-stock flags are validated at display time. The list is re-evaluated every minute and when the tab changes visibility. Reported stock is not live retailer inventory and has not been independently verified.
