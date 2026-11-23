@@ -1,6 +1,6 @@
 const vm=require('node:vm'),assert=require('node:assert/strict');
 const nodes=new Map();function element(k){if(!nodes.has(k))nodes.set(k,{value:k==='#store'?'All':k==='#sort'?'discount':'',checked:false,innerHTML:'',textContent:'',hidden:false,dataset:{},classList:{toggle(){},add(){},remove(){}},setAttribute(){},insertAdjacentHTML(){},append(){},addEventListener(){},scrollIntoView(){},showModal(){},close(){}});return nodes.get(k)}
-const context=vm.createContext({document:{querySelector:element,querySelectorAll:()=>[],createElement:()=>({}),addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},setInterval(){},setTimeout(){},clearTimeout(){},console});
+const context=vm.createContext({document:{querySelector:element,querySelectorAll:()=>[],createElement:()=>({}),addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},setInterval(){},setTimeout(){},clearTimeout(){},URL,console});
 const html=require('node:fs').readFileSync(require('node:path').join(__dirname,'index.html'),'utf8');vm.runInContext(html.split('<script>')[1].split('</script>')[0],context);const run=s=>vm.runInContext(s,context);
 assert.match(element('#result-count').textContent,/0 verified deals/);assert.equal(element('#preview-notice').hidden,true);
 run("setMode('preview')");assert.match(element('#result-count').textContent,/12 sample examples/);
@@ -17,7 +17,7 @@ console.log('PASS: verified default, preview labeling, search, filters, saved it
 context.URL=URL;
 context.Date=class extends Date{constructor(...args){super(...(args.length?args:['2026-11-13T12:00:00Z']))}static now(){return Date.parse('2026-11-13T12:00:00Z')}};
 const monitorScript=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][1][1];
-vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows,todayInNewYork};})();'),context);
+vm.runInContext(monitorScript.replace('})();','globalThis.monitorTest={draw,isMonitorEligible,productPhotos,listedPrice,rows,todayInNewYork,monitorDestination,isMonitorVerified};})();'),context);
 const monitor=run('monitorTest');
 const valid={available_qty:'2',deal_start_date:'2026-11-12',deal_end_date:'2026-11-12'};
 assert.equal(monitor.isMonitorEligible(valid,'2026-11-12'),true);
@@ -27,7 +27,12 @@ assert.equal(monitor.isMonitorEligible({...valid,available_qty:'unknown'},'2026-
 assert.equal(monitor.isMonitorEligible({...valid,available_qty:'-1'},'2026-11-12'),false);
 assert.equal(monitor.isMonitorEligible(valid,'2026-11-11'),false);
 assert.equal(Object.keys(monitor.productPhotos).length,33);
-// Rendering checks use a known date, independent of the date this test runs.
+// Unverified historical records never render.
+monitor.draw();assert(!element('#monitor-grid').innerHTML.includes('<article'));
+assert(monitor.rows.every(r=>!monitor.isMonitorVerified(r)));
+// Verified fixture data exists only in this test context.
+run("monitorTest.rows.forEach(r=>Object.assign(r,{status:'verified',sourceType:'live',inStock:true,checkedAt:'2026-11-13T11:59:00Z',price:5,referencePrice:10,sourceUrl:'https://www.walmart.com/ip/12345'}))");
+
 monitor.draw();
 assert(element('#monitor-grid').innerHTML.includes('Deal expires'));
 assert(element('#monitor-grid').innerHTML.includes('Available'));
@@ -39,6 +44,8 @@ assert.equal(monitor.listedPrice({discount:'Was $21.74 → $19.54'}),19.54);
 assert.equal(monitor.listedPrice({discount:'Rollback to $99'}),99);
 assert.equal(monitor.listedPrice({discount:'25% off'}),Infinity);
 assert.equal(monitor.rows.length,25);
+const verifiedFixture=monitor.rows[0];assert.equal(monitor.isMonitorVerified(verifiedFixture),true);
+for(const patch of [{status:'pending_verification'},{sourceType:'cached'},{checkedAt:'2020-01-01T00:00:00Z'},{checkedAt:'2026-11-13T13:00:00Z'},{inStock:false},{price:10},{referencePrice:0},{sourceUrl:'https://www.walmart.com/shop/deals'},{sourceUrl:'https://www.walmart.com/ip/12345?tag=test'}])assert.equal(monitor.isMonitorVerified({...verifiedFixture,...patch}),false);
 assert(monitor.rows.every(r=>monitor.isMonitorEligible(r,'2026-11-13')));
 assert(!monitor.rows.some(r=>r.deal_end_date<'2026-11-13'||Number(r.available_qty)<=0));
 element('#monitor-category').value='Electronics';monitor.draw();
@@ -59,3 +66,39 @@ assert.equal(monitor.isMonitorEligible(valid,'not-a-date'),false);
 assert.equal(monitor.todayInNewYork(new Date('2026-11-13T04:59:59Z')),'2026-11-12');
 assert.equal(monitor.todayInNewYork(new Date('2026-11-13T05:00:00Z')),'2026-11-13');
 console.log('PASS: invalid dates, explicit out-of-stock flags, invalid quantities, and New York expiry boundaries.');
+
+const affiliate=run('amazonAssociates');
+assert.equal(affiliate.storeId,'dealdrop04c-20');
+assert.equal(affiliate.trackingId,'dealdrop04c0b-20');
+assert.equal(affiliate.productUrl('B00SDJG51S'),'https://www.amazon.com/dp/B00SDJG51S?tag=dealdrop04c0b-20');
+for(const asin of [null,undefined,'','invalid','B00SDJG51S?x=1','b00sdjg51s','B00SDJG51S/'])assert.equal(affiliate.productUrl(asin),null);
+for(const url of ['http://www.amazon.com/dp/B00SDJG51S','https://amazon.com.evil.test/dp/B00SDJG51S','https://www.amazon.com@evil.test/','https://user:pass@www.amazon.com/','https://www.amazon.com:8443/','javascript:alert(1)','/dp/B00SDJG51S'])assert.equal(affiliate.tagUrl(url),null);
+const tagged=new URL(affiliate.tagUrl('https://amazon.com/dp/B00SDJG51S?tag=old-20&tag=other-20&th=1#details'));
+assert.equal(tagged.hostname,'www.amazon.com');
+assert.deepEqual(tagged.searchParams.getAll('tag'),['dealdrop04c0b-20']);
+assert.equal(tagged.searchParams.get('th'),'1');
+assert.equal(affiliate.tagUrl(tagged.href),tagged.href);
+assert.equal(affiliate.asinFromUrl('https://www.amazon.com/gp/product/B00SDJG51S/ref=abc'),'B00SDJG51S');
+assert.equal(affiliate.asinFromUrl('https://evil.test/dp/B00SDJG51S'),null);
+assert.equal(run("stores[0][1]"),'https://www.amazon.com/gp/goldbox?tag=dealdrop04c0b-20');
+run("detail('p2')");
+assert.match(element('#detail-content').innerHTML,/tag=dealdrop04c0b-20/);
+assert.match(element('#detail-content').innerHTML,/paid link/);
+assert.match(element('#detail-content').innerHTML,/rel="sponsored noopener noreferrer"/);
+assert.match(element('#detail-content').innerHTML,/illustrative product example/);
+assert.match(element('#store-grid').innerHTML,/Paid link/);
+assert.match(html,/<p class="monitor-status" id="amazon-disclosure">As an Amazon Associate I earn from qualifying purchases\./);
+assert.match(html,/class="footer-note">As an Amazon Associate I earn from qualifying purchases\./);
+assert.equal(monitor.monitorDestination({store_name:'Amazon.com',asin:'B00SDJG51S',deal_url:'https://www.amazon.com/gp/goldbox'}).url,'https://www.amazon.com/dp/B00SDJG51S?tag=dealdrop04c0b-20');
+assert.equal(monitor.monitorDestination({store_name:'Amazon.com',deal_url:'https://www.amazon.com/gp/product/B00SDJG51S'}).product,true);
+assert.equal(monitor.monitorDestination({store_name:'Amazon.com',deal_url:'https://evil.test/'}),null);
+assert.equal(monitor.monitorDestination({store_name:'Walmart',deal_url:'https://www.walmart.com/shop/deals'}).url,'https://www.walmart.com/shop/deals');
+// Exercise actual card output with a fixture, never published as a real deal.
+element('#monitor-category').value='';
+monitor.rows.push({primary_key:'amazon-test',status:'verified',sourceType:'live',inStock:true,checkedAt:'2026-11-13T11:59:00Z',price:5,referencePrice:10,sourceUrl:'https://www.amazon.com/dp/B00SDJG51S',store_name:'Amazon.com',deal_type:'Sale',product_name:'Affiliate fixture',asin:'B00SDJG51S',deal_url:'https://www.amazon.com/dp/B00SDJG51S',category:'Toys',discount:'Sale',available_qty:'2',deal_start_date:'2026-11-12',deal_end_date:'2026-11-14'});
+monitor.draw();
+const affiliateCard=element('#monitor-grid').innerHTML.match(/<article[^>]*>[\s\S]*?Affiliate fixture[\s\S]*?<\/article>/)[0];
+assert.match(affiliateCard,/https:\/\/www\.amazon\.com\/dp\/B00SDJG51S\?tag=dealdrop04c0b-20/);
+assert.match(affiliateCard,/View on Amazon \(paid link\)/);
+assert.match(affiliateCard,/rel="sponsored noopener noreferrer"/);
+console.log('PASS: Amazon tag, direct ASIN destinations, safe hosts, duplicate tag replacement, disclosures, paid-link labels, and rendered affiliate card.');

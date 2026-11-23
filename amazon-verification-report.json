@@ -1,0 +1,10 @@
+{
+  "checkedOn": "2026-11-23",
+  "source": "67 clean Amazon product URLs from the imported Excel catalogue",
+  "checked": 67,
+  "oldSnapshots": 17,
+  "inaccessible": 50,
+  "snapshotAge": "two to three weeks",
+  "currentVerified": 0,
+  "publicationDecision": "Keep all imported products pending and hidden; previous email prices and quantities were not overwritten."
+}
