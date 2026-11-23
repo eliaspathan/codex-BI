@@ -47,3 +47,11 @@ To publish a record in `verifiedProducts` in `amazon-picks.html`, provide its co
 The list is checked at load, every minute, and on visibility changes. It is capped at ten Amazon products and grouped by category. The existing CSS is unchanged. This is a publication guard, not an automated Amazon data connection or a statement that any pending product was verified.
 
 Run `node test-amazon.cjs` to verify this guard. Existing main-page tests remain `node test.cjs`.
+
+## Excel affiliate catalogue
+
+Imported 67 distinct products across six categories from `Amazon_Affiliate_Deals_Nov_2026-v2.xlsx`. The imported records and their reported offer details are in `amazon-picks-pending.json`; `amazon-excel-affiliate-links.csv` provides their clean product URLs and generated affiliate links for review. Newly generated links use Tracking ID `dealdrop04c0b-20`. Previously supplied links retain their exact URLs and tags.
+
+All imported records remain pending verification. The 66 supplied price pairs and their reported discounts are stored as email observations, not live offers; the Apple Watch SE 3 has no supplied price. All availability, exact stock quantities and live-check timestamps remain unknown. The 46 November 27 dates are marked as inferred campaign dates; 21 entries have no specified expiry.
+
+This import does not add products to the public Amazon page. Its fresh verification checks remain active. Keep affiliate links for customer purchase buttons; use the separate clean URLs for price and stock checks.
