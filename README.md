@@ -37,3 +37,13 @@ The imported monitor list groups products by shared category, with known prices 
 ## November 13, 2026 cleanup
 
 Removed eleven monitor rows with listed deal end dates of November 12, 2026. The remaining twenty-five rows have positive reported quantities and listed end dates on or after the cleanup date. No zero-stock rows were present in this supplied snapshot. Calendar dates, inclusive end dates in America/New_York, positive whole-item quantities, and explicit unavailable/out-of-stock flags are validated at display time. The list is re-evaluated every minute and when the tab changes visibility. Reported stock is not live retailer inventory and has not been independently verified.
+
+## Verified Amazon listings
+
+The Amazon page now publishes only fresh, explicitly verified discounted products with confirmed availability. No Amazon product is currently verified, so the page shows an empty state. The prior nineteen product/suggestion links are preserved in `amazon-picks-pending.json` for review; the page never loads that queue.
+
+To publish a record in `verifiedProducts` in `amazon-picks.html`, provide its confirmed ASIN, name and category, USD price and reference price, `inStock: true`, `status: "verified"`, `sourceType: "live"`, a `checkedAt` timestamp less than one hour old, its clean untagged Amazon `/dp/ASIN` source URL, and the corresponding tagged affiliate URL. Cached/search/email snapshots do not qualify. Known expired offers, missing/invalid checks, unavailable products, regular prices and mismatched product links are rejected. Exact quantity may remain unknown when availability is confirmed; a reported quantity must be a positive whole number.
+
+The list is checked at load, every minute, and on visibility changes. It is capped at ten Amazon products and grouped by category. The existing CSS is unchanged. This is a publication guard, not an automated Amazon data connection or a statement that any pending product was verified.
+
+Run `node test-amazon.cjs` to verify this guard. Existing main-page tests remain `node test.cjs`.

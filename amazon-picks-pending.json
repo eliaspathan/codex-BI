@@ -1,0 +1,138 @@
+{
+  "description": "Review queue only. These products and suggestions have no confirmed current discount and stock check and must not be published.",
+  "products": [
+    {
+      "asin": "B0BFC7WQ6R",
+      "name": "Amazon Echo Spot (2024), Black",
+      "category": "Electronics",
+      "affiliateUrl": "https://www.amazon.com/dp/B0BFC7WQ6R/ref=cm_sw_r_as_gl_apa_gl_i_dl_JNWGDCJQXS014TYPKXYQ?linkCode=ml1&tag=dealdrop04c-20&linkId=daefce20a1254b7b1cb9d23d994e96a8&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B0FT81WJ19",
+      "name": "SUMSATY 16-in-1 bread maker",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/dp/B0FT81WJ19/ref=cm_sw_r_as_gl_apa_gl_i_dl_FGN89PZSENGBFAAP6ZNC?linkCode=ml1&tag=dealdrop04c-20&linkId=52131e4be2a0e60704cb87f725089362&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B083NYJ5ZP",
+      "name": "Amazon pick · B083NYJ5ZP",
+      "category": "Amazon",
+      "affiliateUrl": "https://www.amazon.com/dp/B083NYJ5ZP/ref=cm_sw_r_as_gl_apa_gl_i_dl_YVY1DBNHETSW316PDJXY?linkCode=ml1&tag=dealdrop04c-20&linkId=bb2ab8e4be2663e90ba8f40b0538b82d&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B0H98DNGL8",
+      "name": "Astercook 15-piece knife set",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/dp/B0H98DNGL8/ref=cm_sw_r_as_gl_apa_gl_i_dl_73Y0DC6KCVDGGA79FKKR?linkCode=ml1&tag=dealdrop04c-20&linkId=4396f53e8ee41fbac0ed5adddda47f6f&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B0BZ7H33H4",
+      "name": "Amazon pick · B0BZ7H33H4",
+      "category": "Amazon",
+      "affiliateUrl": "https://www.amazon.com/dp/B0BZ7H33H4/ref=cm_sw_r_as_gl_apa_gl_i_dl_3ZSVG5RDMAFQ1SWBK7CB?linkCode=ml1&tag=dealdrop04c-20&linkId=a0d5bf34306a629bca8c6345a9509714&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B0HGFKCFCM",
+      "name": "FOYOCONVEN 2-slice toaster",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/dp/B0HGFKCFCM/ref=cm_sw_r_as_gl_apa_gl_i_dl_4RPAK6GMQ7AY4THWEMFK?linkCode=ml1&tag=dealdrop04c-20&linkId=dc2a371b12e0891c42ed4a0032974aa3&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": "B0HHRGL1D2",
+      "name": "Amazon pick · B0HHRGL1D2",
+      "category": "Amazon",
+      "affiliateUrl": "https://www.amazon.com/dp/B0HHRGL1D2/ref=cm_sw_r_as_gl_apa_gl_i_dl_G064FVSF4STX8H1Z2XVT?linkCode=ml1&tag=dealdrop04c-20&linkId=65215fd412c4f14fe756991af0b725f9&gaOptInStatus=true",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Explore this Amazon pick",
+      "category": "Amazon",
+      "affiliateUrl": "https://link.amazon/B07IVsYsa",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Explore this Amazon pick",
+      "category": "Amazon",
+      "affiliateUrl": "https://link.amazon/B0eKqRh5M",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Anker Nano 30W USB-C Charger",
+      "category": "Electronics",
+      "affiliateUrl": "https://www.amazon.com/s?k=Anker%20Nano%2030W%20USB%20C%20charger&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Logitech M185 Wireless Mouse",
+      "category": "Electronics",
+      "affiliateUrl": "https://www.amazon.com/s?k=Logitech%20M185%20wireless%20mouse&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "USB-C Braided Charging Cable",
+      "category": "Electronics",
+      "affiliateUrl": "https://www.amazon.com/s?k=USB%20C%20braided%20charging%20cable&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Lodge Cast Iron Skillet",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/s?k=Lodge%2010.25%20inch%20cast%20iron%20skillet&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "OXO Good Grips Swivel Peeler",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/s?k=OXO%20Good%20Grips%20swivel%20peeler&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Digital Kitchen Scale",
+      "category": "Home & Kitchen",
+      "affiliateUrl": "https://www.amazon.com/s?k=digital%20kitchen%20scale&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Microfiber Cleaning Cloths",
+      "category": "Household",
+      "affiliateUrl": "https://www.amazon.com/s?k=microfiber%20cleaning%20cloths&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Drawer Organizer Set",
+      "category": "Household",
+      "affiliateUrl": "https://www.amazon.com/s?k=adjustable%20drawer%20organizers&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "Crayola Colored Pencils",
+      "category": "Family",
+      "affiliateUrl": "https://www.amazon.com/s?k=Crayola%20colored%20pencils&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    },
+    {
+      "asin": null,
+      "name": "LEGO Classic Creative Brick Box",
+      "category": "Family",
+      "affiliateUrl": "https://www.amazon.com/s?k=LEGO%20Classic%20creative%20brick%20box&tag=dealdrop04c0b-20",
+      "status": "pending_verification"
+    }
+  ]
+}
